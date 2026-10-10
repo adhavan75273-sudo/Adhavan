@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><meta name="theme-color" content="#080c15">
+<title>Neon Arena — Online Multiplayer Shooter</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+<header class="topbar"><div><div class="eyebrow">ONLINE ARCADE · MULTIPLAYER</div><h1>NEON <span>ARENA</span></h1></div><div id="connection" class="connection"><i id="connectionDot"></i><span id="connectionText">CONNECTING…</span></div></header>
+<section id="joinPanel" class="join-panel">
+  <div class="hero-mark">✦</div><p class="eyebrow">FIGHT · SURVIVE · DOMINATE</p><h2>Enter the arena</h2><p>Pick a username and loadout, then create a room or join a friend's with their code. First to 5 kills wins the match.</p>
+  <div id="lobbyNotice" class="lobby-notice hidden" role="status"></div>
+  <form id="joinForm" novalidate><label for="playerName">USERNAME</label><input id="playerName" maxlength="16" placeholder="e.g. PixelPilot" autocomplete="nickname">
+  <label for="skinChoice">OUTFIT COLOR</label><div class="skin-picker"><label class="skin-option"><input type="radio" name="skin" value="cyan" checked><span class="skin-dot cyan"></span><span>Cyan</span></label><label class="skin-option"><input type="radio" name="skin" value="violet"><span class="skin-dot violet"></span><span>Violet</span></label><label class="skin-option"><input type="radio" name="skin" value="coral"><span class="skin-dot coral"></span><span>Coral</span></label><label class="skin-option"><input type="radio" name="skin" value="gold"><span class="skin-dot gold"></span><span>Gold</span></label><label class="skin-option"><input type="radio" name="skin" value="blue"><span class="skin-dot blue"></span><span>Blue</span></label><label class="skin-option"><input type="radio" name="skin" value="lime"><span class="skin-dot lime"></span><span>Lime</span></label></div>
+  <label for="weaponChoice">STARTING WEAPON</label><select id="weaponChoice"><option value="pulse">Pulse Rifle · balanced</option><option value="blaster">Heavy Blaster · high damage</option><option value="rapid">Rapid Fire · fast shots</option></select>
+  <button type="button" id="createRoomBtn" class="primary">CREATE NEW ROOM <span>+</span></button>
+  <div class="or-divider"><span>OR JOIN A FRIEND'S ROOM</span></div>
+  <label for="roomCode">ROOM CODE</label><div class="join-row"><input id="roomCode" maxlength="8" placeholder="e.g. K7MQ2" autocomplete="off" autocapitalize="characters"><button type="button" id="joinRoomBtn" class="secondary">JOIN ROOM</button></div></form><div id="joinError" class="error" role="alert"></div>
+  <details class="howto" open><summary>HOW TO PLAY</summary><ol>
+    <li><b>Goal:</b> be the first player to get <b>5 kills</b>. The match then ends for everyone and a results page shows the winner.</li>
+    <li><b>Play with friends:</b> one person taps <b>Create New Room</b> and shares the 5-letter code. Everyone else types it under <b>Room Code</b> and taps <b>Join Room</b>. It works from any device, 2 to 16 players.</li>
+    <li><b>Fight:</b> every hit drains health. At zero you are eliminated, the shooter gets a kill, and you respawn after about 2 seconds.</li>
+    <li><b>Controls:</b> move with WASD / arrow keys (or the left pad on a phone), aim with the mouse (phones aim at the nearest opponent), and hold click or the FIRE button to shoot.</li>
+  </ol></details>
+  <div class="controls-note"><b>DESKTOP</b><span>WASD / arrows · Move</span><span>Mouse · Aim</span><span>Hold click · Fire</span><b>MOBILE</b><span>Left pad · Move</span><span>FIRE button · Shoot</span></div>
+</section>
+<section id="gamePanel" class="game-panel hidden">
+ <div class="matchbar"><div><span class="muted-label">ROOM</span><strong id="roomLabel">-----</strong><button id="copyRoom" class="small-button">COPY CODE</button><span class="you-chip">YOU <b id="myIdLabel">#----</b></span></div><div class="match-status"><i></i> LIVE MATCH <span id="matchPlayers">0/16</span></div><div class="bar-actions"><button id="soundButton" class="small-button">♫ SOUND ON</button><button id="leaveButton" class="small-button leave">LEAVE</button></div></div>
+ <div class="canvas-wrap"><canvas id="game" width="1000" height="650" aria-label="Multiplayer shooting arena"></canvas><div id="gameOverlay" class="game-overlay hidden"></div><div class="mobile-controls"><div id="joystick" class="joystick"><div id="stick" class="stick"></div></div><button id="touchFire" class="touch-fire">FIRE</button></div></div>
+ <div class="below-game"><span>MOVE <b>W A S D</b> / <b>↑ ↓ ← →</b></span><span>AIM <b>MOUSE</b></span><span>FIRE <b>HOLD CLICK</b> / <b>FIRE BUTTON</b></span><span class="muted-label">16 PLAYERS MAX · FIRST TO 5 KILLS WINS</span></div>
+ <div class="score-section"><div class="section-heading">MATCH SCOREBOARD <span id="playerCount">0 PLAYERS</span></div><div id="scoreboard" class="scoreboard"></div></div>
+</section>
+<section id="resultsPanel" class="results-panel hidden" aria-live="polite">
+  <p class="eyebrow">MATCH OVER · ROOM <span id="resultsRoom">-----</span></p>
+  <div class="winner-card"><div class="trophy" aria-hidden="true">🏆</div><div class="winner-label">WINNER</div><h2 id="winnerName">—</h2><div id="winnerMeta" class="winner-meta"></div></div>
+  <p id="yourResult" class="your-result"></p>
+  <div class="section-heading">FINAL KILL SCOREBOARD <span id="resultsCount"></span></div>
+  <div class="table-scroll"><table class="results-table"><thead><tr><th>#</th><th>PLAYER</th><th>ID</th><th>KILLS</th><th>DEATHS</th></tr></thead><tbody id="resultsBody"></tbody></table></div>
+  <button type="button" id="backToLobby" class="primary">BACK TO LOBBY <span>→</span></button>
+</section><footer>NEON ARENA <span>·</span> COMMUNITY GAME BUILD <span>·</span> PLAY FAIR</footer></main><div id="toast" class="toast" role="status"></div>
+<script src="/socket.io/socket.io.js"></script><script src="client.js"></script>
+</body></html>
